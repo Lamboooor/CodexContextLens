@@ -2,7 +2,7 @@
 const assert = require('node:assert/strict');
 const { buildHover } = require('../src/hover');
 class MarkdownString { constructor(){this.value='';} appendMarkdown(text){this.value+=text;return this;} }
-const vscode={MarkdownString};
+const vscode={MarkdownString,env:{language:'zh-CN'}};
 const snapshot={title:'[run](command:evil) <img> $(zap)',contextPercent:25,last:{input:250,output:10,total:260,cached:200,reasoning:5},total:{input:500,output:20,total:520},window:1000,visibleUnits:4,parts:[{label:'History',percent:75},{label:'Files',percent:25}],usageAt:'2026-09-25T03:00:00Z'};
 const card=buildHover(vscode,{snapshot,chosen:'a',checkedAt:'2026-09-25T03:01:00Z',watching:true});
 assert.ok(card.value.includes('25%'));

@@ -1,0 +1,16 @@
+{
+  "command.open": "Codex Lens: 打开用量面板",
+  "command.select": "Codex Lens: 选择并固定会话",
+  "command.refresh": "Codex Lens: 刷新用量",
+  "command.settings": "Codex Lens: 数据源设置",
+  "command.sidebar": "Codex Lens: 打开实时视图",
+  "setting.codexHome": "Codex 主目录（不是 sessions 子目录）。空值使用 CODEX_HOME 或 ~/.codex。在远程窗口读取远程机器。",
+  "setting.refreshSeconds": "日志监听之外的兜底检查间隔（秒）；日志变化时自动增量读取。",
+  "setting.maxSessions": "列出最近修改的会话数量。只完整分析所选会话。",
+  "setting.autoRefreshHover": "自动同步悬浮卡片，仅在内容变化时更新，连续变化最多每 5 秒更新一次。原生悬浮可能重绘；关闭后需手动刷新，实时侧边栏不受影响。",
+  "setting.language": "面板、会话选择器和悬浮的语言。命令与设置名称跟随 VS Code 显示语言。",
+  "language.auto": "跟随 VS Code（其他语言回退到英文）。",
+  "language.en": "English（英文）",
+  "language.zh": "简体中文",
+  "view.live": "Codex Lens 实时用量"
+}

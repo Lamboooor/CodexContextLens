@@ -25,3 +25,7 @@ The package checker needs Python 3. Optional browser tests require Playwright an
 ## Metric calibration
 
 An earlier local comparison of 94 recorded snapshots and 48 boundary combinations matched the inspected official context indicator formula. This applies to the particular locally inspected Codex version and does not guarantee future log/API compatibility. Private inputs are not published. See ACCURACY.md for the formula and measurement boundaries.
+
+## Bilingual preview 0.7.0
+
+Language resolution, full static-template translation, chart/hover labels and manifest translation-key completeness pass automated checks. Host tests cover live language changes preserving a pinned session. Headless Edge checks English copy without untranslated Chinese, Chinese labels, user text preservation, focus/node stability and both language screenshot sets. SVG label bounds are checked and both full dashboard layouts plus the English narrow sidebar and hover were visually reviewed. No foreground/native mouse automation was performed.

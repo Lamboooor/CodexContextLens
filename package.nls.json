@@ -1,0 +1,16 @@
+{
+  "command.open": "Codex Lens: Open Usage Dashboard",
+  "command.select": "Codex Lens: Select and Pin Session",
+  "command.refresh": "Codex Lens: Refresh Usage",
+  "command.settings": "Codex Lens: Data Source Settings",
+  "command.sidebar": "Codex Lens: Open Live View",
+  "setting.codexHome": "Codex home (parent of sessions). Empty uses CODEX_HOME or ~/.codex. Remote windows read the remote host.",
+  "setting.refreshSeconds": "Fallback polling interval in seconds. File changes trigger incremental reads.",
+  "setting.maxSessions": "Number of recent sessions to list. Only the selected session is fully parsed.",
+  "setting.autoRefreshHover": "Automatically synchronize changed hover content in five-second windows. Native tooltips may redraw. Disable for manual snapshots; the sidebar stays live.",
+  "setting.language": "Language for dashboards, session picker and hover. Commands and settings labels follow the VS Code display language.",
+  "language.auto": "Follow VS Code (English fallback).",
+  "language.en": "English",
+  "language.zh": "Simplified Chinese",
+  "view.live": "Codex Lens Live Usage"
+}

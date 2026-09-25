@@ -1,3 +1,10 @@
+## 0.7.0
+
+- Add English and Simplified Chinese dashboards, hover charts, session picker, diagnostics, command names and settings labels.
+- Follow VS Code by default; `codexLens.language` optionally overrides runtime views. Switching languages preserves pinned sessions and keeps user text unchanged.
+- Generate separate English and Chinese screenshot sets and match them to each README.
+- Add language fallback, translation completeness, live switching and SVG layout checks. Native hover redraw behavior is unchanged.
+
 ## 0.6.0
 
 First public-source preview, under `ruoyu-li.codex-lens` with display name **Codex Lens**. Includes bilingual documentation, synthetic product screenshots, installation/migration guidance, support templates and CI. The 0.5.2 runtime refresh behavior is retained; native hover redraw remains a documented limitation. Marketplace publication is pending.

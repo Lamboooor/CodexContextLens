@@ -2,7 +2,7 @@
   "name": "codex-lens",
   "displayName": "Codex Lens",
   "description": "Local Codex token usage, context insights and quota snapshots in VS Code.",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "publisher": "ruoyu-li",
   "license": "MIT",
   "engines": {
@@ -28,23 +28,23 @@
     "commands": [
       {
         "command": "codexLens.open",
-        "title": "Codex Lens: 打开用量面板"
+        "title": "%command.open%"
       },
       {
         "command": "codexLens.select",
-        "title": "Codex Lens: 选择并固定会话"
+        "title": "%command.select%"
       },
       {
         "command": "codexLens.refresh",
-        "title": "Codex Lens: 刷新用量"
+        "title": "%command.refresh%"
       },
       {
         "command": "codexLens.settings",
-        "title": "Codex Lens: 数据源设置"
+        "title": "%command.settings%"
       },
       {
         "command": "codexLens.sidebar",
-        "title": "Codex Lens: 打开实时视图"
+        "title": "%command.sidebar%"
       }
     ],
     "configuration": {
@@ -54,26 +54,42 @@
           "type": "string",
           "default": "",
           "scope": "machine",
-          "description": "Codex 主目录（不是 sessions 子目录）。空值使用 CODEX_HOME 或 ~/.codex。在远程窗口读取远程机器。"
+          "description": "%setting.codexHome%"
         },
         "codexLens.refreshSeconds": {
           "type": "number",
           "default": 15,
           "minimum": 5,
           "maximum": 300,
-          "description": "日志监听之外的兜底检查间隔（秒）；日志变化时自动增量读取。"
+          "description": "%setting.refreshSeconds%"
         },
         "codexLens.maxSessions": {
           "type": "number",
           "default": 80,
           "minimum": 5,
           "maximum": 300,
-          "description": "列出最近修改的会话数量。只完整分析所选会话。"
+          "description": "%setting.maxSessions%"
         },
         "codexLens.autoRefreshHover": {
           "type": "boolean",
           "default": true,
-          "description": "自动同步悬浮卡片，仅在内容变化时更新，连续变化最多每 5 秒更新一次。原生悬浮可能重绘；关闭后需手动刷新，实时侧边栏不受影响。"
+          "description": "%setting.autoRefreshHover%"
+        },
+        "codexLens.language": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "en",
+            "zh-CN"
+          ],
+          "default": "auto",
+          "scope": "window",
+          "description": "%setting.language%",
+          "enumDescriptions": [
+            "%language.auto%",
+            "%language.en%",
+            "%language.zh%"
+          ]
         }
       }
     },
@@ -82,7 +98,7 @@
         {
           "type": "webview",
           "id": "codexLens.live",
-          "name": "Codex Lens 实时用量"
+          "name": "%view.live%"
         }
       ]
     }

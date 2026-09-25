@@ -4,7 +4,7 @@ import json, zipfile, hashlib, re
 root=Path(__file__).resolve().parents[1]
 p=json.loads((root/'package.json').read_text(encoding='utf8'))
 file=root/'dist'/f"{p['name']}-{p['version']}-candidate.vsix"
-allowed={'SECURITY.md','TROUBLESHOOTING.md','docs/INSTALLATION.md','package.json','README.md','README.zh-CN.md','CHANGELOG.md','LICENSE','LICENSE.txt','PRIVACY.md','SUPPORT.md','ACCURACY.md','HOVER.md','CONTRIBUTING.md','RELEASE.md',*[str(x.relative_to(root)).replace('\\','/') for x in (root/'src').glob('*.js')], 'media/dashboard.html','media/dashboard.css','media/dashboard.js','media/icon.png'}
+allowed={'package.nls.json','package.nls.zh-cn.json','package.nls.zh-tw.json','media/i18n.js','SECURITY.md','TROUBLESHOOTING.md','docs/INSTALLATION.md','package.json','README.md','README.zh-CN.md','CHANGELOG.md','LICENSE','LICENSE.txt','PRIVACY.md','SUPPORT.md','ACCURACY.md','HOVER.md','CONTRIBUTING.md','RELEASE.md',*[str(x.relative_to(root)).replace('\\','/') for x in (root/'src').glob('*.js')], 'media/dashboard.html','media/dashboard.css','media/dashboard.js','media/icon.png'}
 with zipfile.ZipFile(file) as z:
     assert z.testzip() is None
     shipped=[]

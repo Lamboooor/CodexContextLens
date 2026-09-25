@@ -2,7 +2,7 @@
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 root = Path(__file__).resolve().parents[1] / 'media'
-html = (root / 'dashboard.html').read_text(encoding='utf8').replace('{{NONCE}}', 'fixture').replace('{{CSP}}', 'http://lens.test').replace('{{CSS}}', 'http://lens.test/dashboard.css').replace('{{JS}}', 'http://lens.test/dashboard.js')
+html = (root / 'dashboard.html').read_text(encoding='utf8').replace('{{NONCE}}', 'fixture').replace('{{CSP}}', 'http://lens.test').replace('{{CSS}}', 'http://lens.test/dashboard.css').replace('{{JS}}', 'http://lens.test/dashboard.js').replace('{{I18N}}','http://lens.test/i18n.js').replace('{{LANG}}','en')
 with sync_playwright() as p:
     browser = p.chromium.launch(channel='msedge', headless=True, args=['--disable-gpu', '--mute-audio', '--disable-background-networking'])
     try:
@@ -23,7 +23,17 @@ with sync_playwright() as p:
         assert page.evaluate("oldMain===document.querySelector('main') && oldNumber===document.querySelector('#context').firstChild && oldPart===document.querySelector('#parts').firstChild")
         assert page.locator('#context').inner_text() == '55%'
         assert page.evaluate("document.activeElement.id") == 'refresh'
+        assert page.locator('#refresh').inner_text() == 'Refresh'
+        assert not page.evaluate(r"/[\u4e00-\u9fff]/.test(document.body.innerText)")
+        page.evaluate("state.language='zh-CN';push()")
+        assert page.locator('#refresh').inner_text() == '刷新'
+        assert page.locator('#parts').inner_text().find('历史对话') >= 0
+        assert page.evaluate("oldMain===document.querySelector('main') && document.activeElement.id==='refresh'")
+        page.evaluate("state.language='en';state.snapshot.title='用户原文';push()")
+        assert '用户原文' in page.locator('#selection-note').inner_text()
+        assert page.locator('#refresh').inner_text() == 'Refresh'
+        assert '{{i18n:' not in page.locator('main').inner_text()
         assert not errors, errors
-        print('PASS 30 live updates preserve card, number and category nodes plus keyboard focus')
+        print('PASS 30 live updates preserve card, number and category nodes plus keyboard focus; live language switching preserves user text')
     finally:
         browser.close()

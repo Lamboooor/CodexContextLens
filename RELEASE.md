@@ -1,4 +1,4 @@
-# Release readiness · 0.6.0
+# Release readiness · 0.7.0
 
 ## Confirmed by the maintainer
 
@@ -6,11 +6,11 @@
 - Extension identity: `ruoyu-li.codex-lens`.
 - Public repository: https://github.com/Lamboooor/CodexLenz
 - MIT license retained; public source upload authorized.
-- Current preview behavior accepted, including native-hover redraw limitations. This does not imply clean-install or cross-platform visual acceptance.
+- 0.6.0 preview behavior accepted, including native-hover redraw limitations. This does not imply clean-install or cross-platform visual acceptance.
 
 ## Prepared
 
-Bilingual README, synthetic screenshots, icon, installation/migration guide, privacy and support policies, issue templates and CI. Official vsce packaging, explicit archive allowlist, no proposed APIs and no runtime third-party dependencies.
+English/Simplified Chinese interface and localized manifest, bilingual README, language-matched synthetic screenshots, icon, installation/migration guide, privacy and support policies, issue templates and CI. Official vsce packaging, explicit archive allowlist, no proposed APIs and no runtime third-party dependencies.
 
 ## Before Marketplace upload
 

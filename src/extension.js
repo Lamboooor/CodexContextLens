@@ -5,6 +5,7 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const { SessionWatcher } = require('./watcher');
 const { buildHover } = require('./hover');
+const i18n = require('../media/i18n');
 const { IncrementalReader, discover, metadata, codexHome } = require('./usage');
 
 function activate(context) {
@@ -19,6 +20,8 @@ function activate(context) {
   status.name = 'Codex Lens'; status.command = 'codexLens.sidebar';
   status.text = '$(pulse) Codex Lens'; status.show();
   const cfg = () => vscode.workspace.getConfiguration('codexLens');
+  const language = () => i18n.language(cfg().get('language', 'auto'), vscode.env.language);
+  const t = (zh,en) => i18n.translator(language())(zh,en);
   const home = () => codexHome(cfg().get('codexHome', ''));
   const sameFolder = (a, b) => process.platform === 'win32' ? path.resolve(a).toLowerCase() === path.resolve(b).toLowerCase() : path.resolve(a) === path.resolve(b);
   function publish() {
@@ -32,7 +35,7 @@ function activate(context) {
     else if (cfg().get('autoRefreshHover', true) && card.value !== cardValue && !cardTimer) {
       cardTimer = setTimeout(() => { cardTimer = null; flushCard(); }, 5000);
     }
-    for (const target of [panel, sidebar].filter(Boolean)) void target.webview.postMessage({ type: 'state', snapshot, sessions: sessions.map(s => ({ file: s.file, title: s.title, cwd: s.cwd, id: s.id })), selected: reader?.file || chosen, pinned: Boolean(chosen), error, home: home(), selectionNote, remote: vscode.env.remoteName || '', watching, inventory: inventory && { count: inventory.totalFiles, errors: inventory.errors, truncated: inventory.truncated }, checkedAt });
+    for (const target of [panel, sidebar].filter(Boolean)) void target.webview.postMessage({ type: 'state', language: language(), snapshot, sessions: sessions.map(s => ({ file: s.file, title: s.fallbackTitle ? t('会话 ','Session ')+(s.id.slice(-8)||path.basename(s.file).slice(8,24)) : s.title, cwd: s.cwd, id: s.id })), selected: reader?.file || chosen, pinned: Boolean(chosen), error, home: home(), selectionNote, remote: vscode.env.remoteName || '', watching, inventory: inventory && { count: inventory.totalFiles, errors: inventory.errors, truncated: inventory.truncated }, checkedAt });
   }
   function flushCard() {
     clearTimeout(cardTimer); cardTimer = null;
@@ -42,7 +45,7 @@ function activate(context) {
       publishedSample ||= Boolean(snapshot?.last && !snapshot?.catchingUp);
     }
   }
-  function hoverCard() { return buildHover(vscode, { snapshot, chosen, error, watching, selectionNote, autoRefreshHover: cfg().get('autoRefreshHover', true) }); }
+  function hoverCard() { return buildHover(vscode, { snapshot, chosen, error, watching, selectionNote, language: language(), autoRefreshHover: cfg().get('autoRefreshHover', true) }); }
   function refresh(force = false) {
     if (disposed) return Promise.resolve();
     if (activeRefresh) {
@@ -109,12 +112,12 @@ function activate(context) {
       const folders = vscode.workspace.workspaceFolders || [];
       const match = sessions.find(s => !s.internal && s.cwd && folders.some(f => sameFolder(s.cwd, f.uri.fsPath)));
       const selected = chosen || match?.file || sessions.find(s => !s.internal)?.file;
-      selectionNote = !chosen && !match && folders.length && selected ? '当前项目暂无匹配会话，展示最近主会话（来源见下方目录）' : '';
+      selectionNote = !chosen && !match && folders.length && selected ? t('当前项目暂无匹配会话，展示最近主会话（来源见下方目录）', 'No workspace match; showing the latest main session (source below)') : '';
       if (!selected) {
         reader = null; snapshot = null;
-        if (inventory?.errors.length) error = `无法完整读取会话目录：${inventory.errors[0]}`;
-        else if (sessions.length) error = '未找到当前工作区的近期会话，请手动选择；也可以在设置中增加会话数量。';
-        else error = '未发现本地会话。确认 Codex 主目录，并在 Codex 中完成一次对话。';
+        if (inventory?.errors.length) error = t(`无法完整读取会话目录：${inventory.errors[0]}`, `Could not fully read the sessions directory: ${inventory.errors[0]}`);
+        else if (sessions.length) error = t('未找到当前工作区的近期会话，请手动选择；也可以在设置中增加会话数量。', 'No recent workspace session. Select one manually or increase the session limit.');
+        else error = t('未发现本地会话。确认 Codex 主目录，并在 Codex 中完成一次对话。', 'No local sessions found. Check Codex home and whether Codex has written a conversation log.');
       } else {
         if (!reader || reader.file !== selected) reader = new IncrementalReader(selected);
         const result = await reader.update();
@@ -123,7 +126,7 @@ function activate(context) {
         checkedAt = new Date().toISOString();
       }
     } catch (e) {
-      error = `读取失败（${e.code || '错误'}）：${e.message}`;
+      error = t(`读取失败（${e.code || '错误'}）：${e.message}`, `Read failed(${e.code || 'Error'}):${e.message}`);
       // Retain the last sample with an explicit failure banner and its timestamp.
     } finally {
       busy = false;
@@ -143,13 +146,13 @@ function activate(context) {
   }
   async function picker() {
     await refresh(true);
-    const items = [{ label: '$(sync) 自动：工作区最近会话', file: '' }, ...sessions.map(s => ({ label: s.title, description: s.id.slice(-8), detail: s.cwd || s.file, file: s.file }))];
-    const picked = await vscode.window.showQuickPick(items, { title: '选择并固定 Codex 会话', matchOnDetail: true, placeHolder: '固定后不会因为其他聊天活动而跳动' });
+    const items = [{ label: t('$(sync) 自动：工作区最近会话', '$(sync) Auto: Latest workspace session'), file: '' }, ...sessions.map(s => ({ label: s.fallbackTitle ? t('会话 ','Session ')+(s.id.slice(-8)||path.basename(s.file).slice(8,24)) : s.title, description: s.id.slice(-8), detail: s.cwd || s.file, file: s.file }))];
+    const picked = await vscode.window.showQuickPick(items, { title: t('选择并固定 Codex 会话', 'Select and pin a Codex session'), matchOnDetail: true, placeHolder: t('固定后不会因为其他聊天活动而跳动', 'Pinned sessions stay selected while other chats are active') });
     if (picked) await select(picked.file);
   }
   async function open() {
     if (panel) { panel.reveal(); publish(); return; }
-    panel = vscode.window.createWebviewPanel('codexLens', 'Codex Lens · 用量透镜', vscode.ViewColumn.Beside, { enableScripts: true, localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'media')] });
+    panel = vscode.window.createWebviewPanel('codexLens', t('Codex Lens · 用量透镜', 'Codex Lens · Usage dashboard'), vscode.ViewColumn.Beside, { enableScripts: true, localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'media')] });
     await setupView(panel, false);
   }
   async function setupView(current, isSidebar) {
@@ -170,8 +173,9 @@ function activate(context) {
       else if (message.type === 'settings') await vscode.commands.executeCommand('workbench.action.openSettings', 'codexLens');
     });
     // Register the ready handler before the page can execute its startup script.
-    webview.html = template.replaceAll('{{CSP}}', webview.cspSource).replaceAll('{{NONCE}}', nonce)
+    webview.html = i18n.html(template,language()).replaceAll('{{CSP}}', webview.cspSource).replaceAll('{{NONCE}}', nonce)
       .replaceAll('{{CSS}}', webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'media', 'dashboard.css')).toString())
+      .replaceAll('{{I18N}}', webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'media', 'i18n.js')).toString())
       .replaceAll('{{JS}}', webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'media', 'dashboard.js')).toString());
     publish();
 
@@ -185,6 +189,10 @@ function activate(context) {
     vscode.commands.registerCommand('codexLens.settings', () => vscode.commands.executeCommand('workbench.action.openSettings', 'codexLens')),
     vscode.workspace.onDidChangeConfiguration(e => {
       if (!e.affectsConfiguration('codexLens')) return;
+      if (e.affectsConfiguration('codexLens.language') && !['codexHome','maxSessions','refreshSeconds'].some(key=>e.affectsConfiguration('codexLens.'+key))) {
+        if(panel)panel.title=t('Codex Lens · 用量透镜','Codex Lens · Usage dashboard');
+        void refresh().then(flushCard); return;
+      }
       clearTimeout(watchTimer); watchTimer = null; watchForce = false;
       clearTimeout(cardTimer); cardTimer = null; publishedSample = false;
       epoch++; lastScan = 0; inventory = null; reader = null; snapshot = null; metadataCache.clear();

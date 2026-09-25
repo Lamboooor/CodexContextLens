@@ -8,7 +8,7 @@ const crypto = require('node:crypto');
 const root = process.env.CODEX_LENS_TEST_ROOT || path.resolve(__dirname,'..');
 async function main(){
   class MarkdownString { constructor(){this.value='';} appendMarkdown(value){this.value+=value;return this;} }
-  let statusWrites=0, autoRefreshHover=true;
+  let statusWrites=0, autoRefreshHover=true, languageOption='auto';
   const status={set text(value){statusWrites++;this.label=value;},set tooltip(value){statusWrites++;this.card=value;},get tooltip(){return this.card;},show(){},dispose(){},get tooltip2(){throw Error('proposed API must not be accessed');}};
   const commands=new Map(), sent=[], timers=new Map(), state=new Map();
   let receive, configChanged, disposal, version=0, timerId=0, panel, watcher, viewProvider;
@@ -17,7 +17,7 @@ async function main(){
   const vscode={
     MarkdownString,StatusBarAlignment:{Right:1},ViewColumn:{Beside:2},env:{remoteName:''},
     Uri:{joinPath:(base,...parts)=>uri(path.join(base.fsPath,...parts))},
-    workspace:{workspaceFolders:[{uri:uri('/new-project')}],getConfiguration:()=>({get:(key,fallback)=>key==='autoRefreshHover'?autoRefreshHover:fallback}),onDidChangeConfiguration:fn=>{configChanged=fn;return disposable();}},
+    workspace:{workspaceFolders:[{uri:uri('/new-project')}],getConfiguration:()=>({get:(key,fallback)=>key==='autoRefreshHover'?autoRefreshHover:key==='language'?languageOption:fallback}),onDidChangeConfiguration:fn=>{configChanged=fn;return disposable();}},
     commands:{registerCommand:(id,fn)=>{commands.set(id,fn);return disposable();},executeCommand:async()=>{}},
     window:{registerWebviewViewProvider:(id,provider)=>{viewProvider=provider;return disposable();},onDidChangeActiveColorTheme:()=>disposable(),createStatusBarItem:()=>status,showQuickPick:async()=>undefined,
       createWebviewPanel:()=>{panel={visible:true,reveal(){},dispose(){disposal?.();},onDidDispose:fn=>{disposal=fn;return disposable();},onDidChangeViewState:()=>disposable(),webview:{set html(value){this.page=value;assert.equal(typeof receive,'function','ready listener must exist before loading HTML');void receive({type:'ready'});},get html(){return this.page;},cspSource:'test-local:',asWebviewUri:x=>x,postMessage:async m=>sent.push(m),onDidReceiveMessage:fn=>{receive=fn;return disposable();}}};return panel;}}
@@ -25,7 +25,7 @@ async function main(){
   let updates=0;
   const usage={codexHome:()=>'/codex',discover:async()=>({files:[{file:'/codex/sessions/review.jsonl',size:20},{file:'/codex/sessions/a.jsonl',size:20}],totalFiles:1,errors:[]}),metadata:async file=>({id:'session-a',cwd:'/repo',title:'Hello',internal:file.includes('review')}),IncrementalReader:class{constructor(file){this.file=file;}async update(){updates++;return {file:this.file,id:'session-a',title:'Hello',contextPercent:25+version,last:{input:90,output:10,total:100},total:{total:100},usageAt:'2026-09-25T00:00:00Z'};}}};
   const context={extensionUri:uri(root),extensionPath:root,subscriptions:[],workspaceState:{get:(key,fallback)=>state.get(key)||fallback,update:async(key,value)=>state.set(key,value)}};
-  const sandbox={module:{exports:{}},require:name=>({'vscode':vscode,'node:fs/promises':fs,'node:path':path,'node:crypto':crypto,'./usage':usage,'./watcher':{SessionWatcher:class{constructor(change,state){this.change=change;this.state=state;watcher=this;}start(){this.state(true);}dispose(){this.closed=true;}}},'./hover':require(path.join(root,'src/hover'))}[name]),process,console,setTimeout:(fn,delay)=>{timers.set(++timerId,{fn,delay});return timerId;},clearTimeout:id=>timers.delete(id)};
+  const sandbox={module:{exports:{}},require:name=>({'vscode':vscode,'node:fs/promises':fs,'node:path':path,'node:crypto':crypto,'./usage':usage,'./watcher':{SessionWatcher:class{constructor(change,state){this.change=change;this.state=state;watcher=this;}start(){this.state(true);}dispose(){this.closed=true;}}},'../media/i18n':require(path.join(root,'media/i18n')),'./hover':require(path.join(root,'src/hover'))}[name]),process,console,setTimeout:(fn,delay)=>{timers.set(++timerId,{fn,delay});return timerId;},clearTimeout:id=>timers.delete(id)};
   vm.runInNewContext(await fs.readFile(path.join(root,'src/extension.js'),'utf8'),sandbox);
   sandbox.module.exports.activate(context);
   await new Promise(resolve=>setImmediate(resolve));
@@ -76,6 +76,17 @@ async function main(){
   assert.ok(side.webview.html.includes('dashboard.js'));
   assert.ok(sidebarMessages.at(-1).snapshot.last.total===100);
   console.log('PASS sidebar receives existing snapshot immediately on resolve');
+  await receive({type:'select',file:'/codex/sessions/a.jsonl'});
+  languageOption='zh-CN';
+  configChanged({affectsConfiguration:key=>key==='codexLens'||key==='codexLens.language'});
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(state.get('selectedSession'),'/codex/sessions/a.jsonl','language change preserves pinned session');
+  assert.equal(sidebarMessages.at(-1).language,'zh-CN');
+  assert.ok(status.tooltip.value.includes('固定会话'));
+  languageOption='en';
+  configChanged({affectsConfiguration:key=>key==='codexLens'||key==='codexLens.language'});
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.ok(status.tooltip.value.includes('Pinned session'));
   autoRefreshHover=false;
   configChanged({affectsConfiguration:()=>true});
   await new Promise(resolve=>setImmediate(resolve));

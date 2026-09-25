@@ -20,28 +20,39 @@ if not node:
     location=root/'.tools/node-location.txt'
     if location.exists():node=str(root/'.tools'/location.read_text().strip()/'node.exe')
 if not node:raise RuntimeError('Node.js required to render the actual hover chart')
-result=subprocess.run([node,'-e',"process.stdout.write(require('./src/chart').chart(JSON.parse(process.argv[1])))",json.dumps(s)],cwd=root,capture_output=True,text=True,encoding='utf8',timeout=15,creationflags=0x08000000 if os.name=='nt' else 0);result.check_returncode()
-hover=result.stdout
 media=root/'media'
-html=(media/'dashboard.html').read_text(encoding='utf8').replace('{{NONCE}}','demo').replace('{{CSP}}','http://lens.test').replace('{{CSS}}','http://lens.test/dashboard.css').replace('{{JS}}','http://lens.test/dashboard.js')
+base_html=(media/'dashboard.html').read_text(encoding='utf8').replace('{{NONCE}}','demo').replace('{{CSP}}','http://lens.test').replace('{{CSS}}','http://lens.test/dashboard.css').replace('{{JS}}','http://lens.test/dashboard.js').replace('{{I18N}}','http://lens.test/i18n.js')
 with sync_playwright() as p:
     browser=p.chromium.launch(channel='msedge',headless=True,args=['--disable-gpu','--mute-audio','--disable-background-networking'])
     try:
-        page=browser.new_page(viewport={'width':1100,'height':1100},device_scale_factor=1,timezone_id='UTC')
-        errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
-        page.route('http://lens.test/**',lambda route:route.fulfill(body=html,content_type='text/html') if route.request.url.endswith('/') else route.fulfill(path=str(media/route.request.url.rsplit('/',1)[-1])))
-        page.add_init_script("Date.now=()=>Date.parse('2026-09-25T12:00:00Z');window.acquireVsCodeApi=()=>({postMessage:()=>{}})")
-        page.goto('http://lens.test/')
-        page.evaluate("data=>window.dispatchEvent(new MessageEvent('message',{data}))",state)
-        page.screenshot(path=str(out/'dashboard.png'),full_page=True)
-        page.set_viewport_size({'width':400,'height':1100})
-        page.screenshot(path=str(out/'sidebar.png'))
-        assert not errors,errors
-        page.set_viewport_size({'width':400,'height':338})
-        page.set_content('<body style="margin:0">'+hover+'</body>')
-        page.screenshot(path=str(out/'hover.png'),omit_background=True)
-        page.set_viewport_size({'width':256,'height':256})
+        for language in ['en','zh-CN']:
+            target=out/language;target.mkdir(exist_ok=True)
+            s['title']='Demo · Refactor a sample app (synthetic data)' if language=='en' else '演示 · 重构示例应用（合成数据）'
+            s['model']='Demo model' if language=='en' else '演示模型'
+            state['sessions'][0]['title']=s['title'];state['language']=language
+            result=subprocess.run([node,'-e',"process.stdout.write(require('./src/chart').chart(JSON.parse(process.argv[1]),false,process.argv[2]))",json.dumps(s),language],cwd=root,capture_output=True,text=True,encoding='utf8',timeout=15,creationflags=0x08000000 if os.name=='nt' else 0);result.check_returncode()
+            hover=result.stdout
+            html=base_html.replace('{{LANG}}',language)
+            page=browser.new_page(viewport={'width':1100,'height':1100},device_scale_factor=1,timezone_id='UTC')
+            errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+            page.route('http://lens.test/**',lambda route:route.fulfill(body=html,content_type='text/html') if route.request.url.endswith('/') else route.fulfill(path=str(media/route.request.url.rsplit('/',1)[-1])))
+            page.add_init_script("Date.now=()=>Date.parse('2026-09-25T12:00:00Z');window.acquireVsCodeApi=()=>({postMessage:()=>{}})")
+            page.goto('http://lens.test/')
+            page.evaluate("data=>window.dispatchEvent(new MessageEvent('message',{data}))",state)
+            assert '{{i18n:' not in page.locator('main').inner_text()
+            if language=='en':assert not page.evaluate(r"/[\u4e00-\u9fff]/.test(document.body.innerText)")
+            page.screenshot(path=str(target/'dashboard.png'),full_page=True)
+            page.set_viewport_size({'width':400,'height':1100})
+            page.screenshot(path=str(target/'sidebar.png'))
+            assert not errors,errors
+            page.set_viewport_size({'width':400,'height':338})
+            page.set_content('<body style="margin:0">'+hover+'</body>')
+            assert page.evaluate("[...document.querySelectorAll('svg text')].every(e=>{const b=e.getBBox();return b.x>=0 && b.x+b.width<=400})"), 'Hover text overflows: '+language
+            page.screenshot(path=str(target/'hover.png'),omit_background=True)
+            page.close()
+        page=browser.new_page(viewport={'width':256,'height':256})
         page.set_content('<body style="margin:0">'+icon+'</body>')
         page.screenshot(path=str(media/'icon.png'),omit_background=True)
+        page.close()
     finally:browser.close()
-print('Generated icon and 3 screenshots from synthetic data; no live log access')
+print('Generated icon and bilingual screenshots from synthetic data; no live log access')

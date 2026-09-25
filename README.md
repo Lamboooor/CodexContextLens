@@ -21,20 +21,20 @@ Local token counters, context insights, visible-content breakdowns and quota sna
 
 The Explorer sidebar view updates existing numbers and chart elements. The status-bar hover automatically synchronizes changed data in a fixed five-second window. Identical content is not republished. Stable VS Code APIs do not expose a status-bar mouse-enter event: this is background synchronization, not an on-hover read. Native tooltip replacement may still redraw; the live sidebar updates individual elements. Set `codexLens.autoRefreshHover` to false only if you prefer a manual snapshot.
 
-![Codex Lens dashboard showing synthetic example data](https://raw.githubusercontent.com/Lamboooor/CodexLenz/main/docs/screenshots/dashboard.png)
+![Codex Lens dashboard showing synthetic example data](https://raw.githubusercontent.com/Lamboooor/CodexLenz/main/docs/screenshots/en/dashboard.png)
 
-*Illustrative data only. The interface is currently primarily Chinese.*
+*Illustrative data only. English interface shown; Chinese screenshots are available in the Chinese README.*
 
 ## Get started
 
 1. Build a VSIX from this repository using the development commands below, then run **Extensions: Install from VSIX…** in desktop VS Code. This repository has not yet been published to Marketplace.
 2. Click **Codex Lens** in the bottom status bar to open the Explorer sidebar view.
-3. For the larger dashboard, run **Codex Lens: 打开用量面板** from the command palette.
+3. For the larger dashboard, run **Codex Lens: Open Usage Dashboard** from the command palette.
 4. Use the session picker to pin a conversation when working with several chats.
 
 Codex must have written local session logs. Startup reads existing logs; no new model request is needed. Automatic selection prefers the current workspace. If there is no matching conversation, the latest main conversation is shown with a source notice. It does not follow the official Codex chat selection. Background subagent sessions are excluded from automatic selection.
 
-The current interface is primarily Chinese. Documentation is available in English and Chinese.
+The interface supports English and Simplified Chinese. It follows the VS Code display language by default; other display languages use English. Set `codexLens.language` to `en` or `zh-CN` to override dashboard, picker and hover language. Command and settings labels follow the VS Code display language. Session titles and log content are never translated.
 
 Upgrading from the personal preview (`lambo-local.codex-lens-local`)? Follow the [installation and migration guide](docs/INSTALLATION.md) to avoid duplicate entries.
 
@@ -53,12 +53,13 @@ Hidden instructions, images, server-side trimming and unlogged content cannot be
 
 | Setting | Default | Purpose |
 | --- | --- | --- |
+| `codexLens.language` | `auto` | Follow VS Code, or select `en` / `zh-CN`. Changes update open views without clearing the pinned session. |
 | `codexLens.codexHome` | Empty | Uses `CODEX_HOME`, otherwise `~/.codex`. Set the parent of `sessions`, not the sessions directory itself. |
 | `codexLens.refreshSeconds` | 15 | Fallback check interval when filesystem notifications are unavailable or missed. |
 | `codexLens.autoRefreshHover` | `true` | Automatically synchronize changed hover content in a five-second window. Disable for a manual snapshot; the sidebar stays live. |
 | `codexLens.maxSessions` | 80 | Recent session list size. Workspace matching can search older main conversations. |
 
-Only the selected log is parsed fully. File notifications are coalesced and reads are incremental. Archived sessions are not currently included. Select **自动** to release a pinned session.
+Only the selected log is parsed fully. File notifications are coalesced and reads are incremental. Archived sessions are not currently included. Select **Auto** to release a pinned session.
 
 ## Compatibility
 

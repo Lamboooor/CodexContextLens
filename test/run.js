@@ -97,7 +97,7 @@ async function main() {
     addEventListener(type,handler){this.listeners[type]=handler;}
   }
   const ids=new Map(),messages=[],handlers={};
-  const sandbox={setTimeout:()=>0,clearTimeout:()=>{},document:{getElementById:id=>{if(!ids.has(id))ids.set(id,new Element(id));return ids.get(id);},createElement:tag=>new Element(tag)},window:{addEventListener:(type,handler)=>handlers[type]=handler},acquireVsCodeApi:()=>({postMessage:m=>messages.push(m)}),console};
+  const sandbox={LensI18n:require('../media/i18n'),setTimeout:()=>0,clearTimeout:()=>{},document:{getElementById:id=>{if(!ids.has(id))ids.set(id,new Element(id));return ids.get(id);},createElement:tag=>new Element(tag)},window:{addEventListener:(type,handler)=>handlers[type]=handler},acquireVsCodeApi:()=>({postMessage:m=>messages.push(m)}),console};
   vm.runInNewContext(await fs.readFile(path.join(__dirname,'../media/dashboard.js'),'utf8'),sandbox);
   const a=new UsageAccumulator();a.feed(count(usage(500,20,400)));
   const state={type:'state',sessions:[{file:'a',id:'a',title:'<img onerror=evil()>',cwd:'/tmp'}],snapshot:a.snapshot(),home:'/tmp',selected:'a',pinned:true,inventory:{count:1,errors:[]}};

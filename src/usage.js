@@ -240,7 +240,7 @@ async function metadata(file) {
         if (e.type === 'event_msg' && p.type === 'user_message' && !title) title = safeTitle(p.message || '');
       } catch { /* prefix can end in an incomplete line */ }
     }
-    return { id, cwd, internal, title: title || `会话 ${id.slice(-8) || path.basename(file).slice(8, 24)}` };
+    return { id, cwd, internal, fallbackTitle: !title, title: title || `Session ${id.slice(-8) || path.basename(file).slice(8, 24)}` };
   } finally { await handle.close(); }
 }
 module.exports = { UsageAccumulator, IncrementalReader, normalize, discover, metadata, codexHome, CATEGORIES };

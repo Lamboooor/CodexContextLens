@@ -37,3 +37,7 @@ Explain the problem, behavior change and validation. Preserve privacy, malformed
 Never commit real transcripts, credentials, screenshots containing private paths, local toolchains or generated VSIX files. Do not automate global input or disturb another running application while testing. Release uploads are a separate maintainer action.
 
 By contributing you agree that your contribution is provided under the repository's MIT license. See [support](SUPPORT.md) and [security reporting](SECURITY.md).
+
+## Localization
+
+Runtime language resolution and static UI strings live in `media/i18n.js`; dynamic copy uses explicit Chinese/English pairs. Manifest commands, view names and settings use `package.nls*.json`. Add both languages when changing copy, preserve user-provided text, and run `npm test` plus the optional browser checks. Regenerate `docs/screenshots/en/` and `docs/screenshots/zh-CN/` from synthetic data with `python scripts/marketing.py`; README images must match their document language.

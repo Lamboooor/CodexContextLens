@@ -10,9 +10,9 @@
 
 [English](README.md) · [安装指南](docs/INSTALLATION.md) · [隐私说明](PRIVACY.md) · [问题反馈](https://github.com/Lamboooor/CodexLenz/issues/new/choose)
 
-![使用合成数据展示的 Codex Lens 面板](https://raw.githubusercontent.com/Lamboooor/CodexLenz/main/docs/screenshots/dashboard.png)
+![使用合成数据展示的 Codex Lens 面板](https://raw.githubusercontent.com/Lamboooor/CodexLenz/main/docs/screenshots/zh-CN/dashboard.png)
 
-*截图全部采用合成数据，不包含真实会话。当前界面主要为中文。*
+*截图全部采用合成数据，不包含真实会话。此处展示中文界面；英文 README 使用对应英文截图。*
 
 ## 可以查看什么
 
@@ -48,10 +48,15 @@
 
 **已知限制：原生悬浮在替换内容时可能闪烁。** 正式接口没有状态栏鼠标移入回调，也不能只替换悬浮里的数字。持续观察建议使用实时侧边栏；可将 `codexLens.autoRefreshHover` 设为 `false`，使悬浮改为手动快照。详见[刷新说明](HOVER.md)。
 
+## 界面语言
+
+支持 English 和简体中文，默认跟随 VS Code 显示语言；中文地区设置显示简体中文，其他语言回退到英文。设置 `codexLens.language` 为 `en` 或 `zh-CN` 可单独切换面板、会话选择器和悬浮语言，切换不会丢失固定会话。命令和设置名称跟随 VS Code 显示语言。会话标题和日志原文不会被翻译。
+
 ## 设置
 
 | 设置 | 默认值 | 用途 |
 | --- | --- | --- |
+| `codexLens.language` | auto | 跟随 VS Code，或选择 en / zh-CN。 |
 | `codexLens.codexHome` | 空 | 使用 `CODEX_HOME` 或 `~/.codex`；填写 sessions 的父目录。 |
 | `codexLens.refreshSeconds` | 15 | 文件监听之外的兜底检查间隔，单位秒。 |
 | `codexLens.maxSessions` | 80 | 最近会话列表数量；工作区匹配可能查找更早的主会话。 |

@@ -35,3 +35,9 @@ Uninstall Codex Lens from the Extensions view. You can optionally remove its `co
 ## 中文速览
 
 当前从源码打包安装，尚未上架。执行上方命令后，在命令面板选择“从 VSIX 安装扩展”，再重载窗口。旧个人版与公开版 ID 不同，请先卸载旧版，避免双入口；固定会话需重新选择。不要为了安装公开版启用实验 API。
+
+## Language / 语言
+
+The UI follows VS Code by default (`codexLens.language: auto`). Choose `en` for English or `zh-CN` for Simplified Chinese in Settings. The override applies to live views, hover and session picker; command names and settings labels follow VS Code itself. Chinese locale variants use Simplified Chinese; other languages fall back to English. Switching languages preserves your pinned session.
+
+设置中搜索 `codexLens.language`，可选择跟随 VS Code、English 或简体中文。切换语言不会翻译会话原文，也不会改变 token 统计。
