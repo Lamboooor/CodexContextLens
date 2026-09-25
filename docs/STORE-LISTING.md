@@ -2,21 +2,21 @@
 
 ## English
 
-**Display name:** Codex Lens
+**Display name:** Codex Context Lens
 
 **Short description:** Local Codex token usage, context snapshots and visible-content breakdowns in VS Code.
 
-**Opening copy:** See your Codex usage without leaving the editor. Codex Lens reads existing local session logs and turns them into a context gauge, token counters, visible-content charts and quota snapshots. Keep a live view beside your work or check an automatically synchronized status-bar snapshot. No API key, runtime network requests or telemetry.
+**Opening copy:** See your Codex usage without leaving the editor. Codex Context Lens reads existing local session logs and turns them into a context gauge, token counters, visible-content charts and quota snapshots. Keep a live view beside your work or check an automatically synchronized status-bar snapshot. No API key, runtime network requests or telemetry.
 
 **Important disclosure:** Independent community tool, not affiliated with OpenAI. Context and quota values are recorded snapshots. Content shares measure visible characters, not exact token attribution. English and Simplified Chinese UI; defaults to the VS Code display language.
 
 ## 中文
 
-**名称：** Codex Lens
+**名称：** Codex Context Lens
 
 **简介：** 在 VS Code 中查看 Codex token 用量、上下文快照及可见内容构成。
 
-**介绍：** 不离开编辑器就能看清最近一次请求和整个会话的消耗。Codex Lens 读取已有本地日志，通过上下文圆环、数字卡、构成色条和额度快照展示数据。实时视图局部更新，悬浮卡片自动同步。无需 API Key，不联网、无遥测。
+**介绍：** 不离开编辑器就能看清最近一次请求和整个会话的消耗。Codex Context Lens 读取已有本地日志，通过上下文圆环、数字卡、构成色条和额度快照展示数据。实时视图局部更新，悬浮卡片自动同步。无需 API Key，不联网、无遥测。
 
 **说明：** 非官方工具。上下文和额度可能受日志延迟影响；构成占比不是精确 token 分账。
 
@@ -31,4 +31,4 @@
 All sample titles, paths, timestamps and metrics are invented. No real prompts, logs or account information are used. Public README images use HTTPS URLs hosted in this repository. Native tooltip updates may redraw; continuous monitoring uses the live sidebar.
 
 
-Confirmed publisher: `ruoyu-li`. Display name: `Codex Lens`. Public ID: `ruoyu-li.codex-lenz`. Source/support: https://github.com/Lamboooor/CodexLenz. Marketplace publication remains pending.
+Confirmed publisher: `ruoyu-li`. Display name: `Codex Context Lens`. Public ID: `ruoyu-li.codex-context-lens`. Source/support: https://github.com/Lamboooor/CodexContextLens. Marketplace publication remains pending.

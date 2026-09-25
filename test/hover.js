@@ -11,7 +11,7 @@ assert.ok(card.value.includes('Files 25\\.0%'));
 assert.ok(!card.value.includes('[run](command:evil)'));
 assert.ok(!card.value.includes('<img>'));
 assert.equal(card.supportHtml,false);
-assert.deepEqual(card.isTrusted.enabledCommands,['codexLens.refresh','codexLens.select','codexLens.open','codexLens.sidebar']);
+assert.deepEqual(card.isTrusted.enabledCommands,['codexContextLens.refresh','codexContextLens.select','codexContextLens.open','codexContextLens.sidebar']);
 assert.ok(buildHover(vscode,{snapshot:null,watching:false}).value.includes('自动同步'));
 assert.ok(buildHover(vscode,{snapshot,error:'IO failed',watching:true}).value.includes('旧数据'));
 const svg=Buffer.from(card.value.match(/base64,([^)]*)/)[1],'base64').toString('utf8');

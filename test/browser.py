@@ -2,16 +2,16 @@
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 root = Path(__file__).resolve().parents[1] / 'media'
-html = (root / 'dashboard.html').read_text(encoding='utf8').replace('{{NONCE}}', 'fixture').replace('{{CSP}}', 'http://lens.test').replace('{{CSS}}', 'http://lens.test/dashboard.css').replace('{{JS}}', 'http://lens.test/dashboard.js').replace('{{I18N}}','http://lens.test/i18n.js').replace('{{LANG}}','en')
+html = (root / 'dashboard.html').read_text(encoding='utf8').replace('{{NONCE}}', 'fixture').replace('{{CSP}}', 'http://context-lens.test').replace('{{CSS}}', 'http://context-lens.test/dashboard.css').replace('{{JS}}', 'http://context-lens.test/dashboard.js').replace('{{I18N}}','http://context-lens.test/i18n.js').replace('{{LANG}}','en')
 with sync_playwright() as p:
     browser = p.chromium.launch(channel='msedge', headless=True, args=['--disable-gpu', '--mute-audio', '--disable-background-networking'])
     try:
         page = browser.new_page(viewport={'width': 380, 'height': 800})
         errors = []
         page.on('pageerror', lambda error: errors.append(str(error)))
-        page.route('http://lens.test/**', lambda route: route.fulfill(body=html, content_type='text/html') if route.request.url.endswith('/') else route.fulfill(path=str(root / route.request.url.rsplit('/', 1)[-1])))
+        page.route('http://context-lens.test/**', lambda route: route.fulfill(body=html, content_type='text/html') if route.request.url.endswith('/') else route.fulfill(path=str(root / route.request.url.rsplit('/', 1)[-1])))
         page.add_init_script("window.acquireVsCodeApi=()=>({postMessage:()=>{}})")
-        page.goto('http://lens.test/')
+        page.goto('http://context-lens.test/')
         page.evaluate("""() => {
           window.state={type:'state',sessions:[],snapshot:{model:'fixture',contextPercent:25,contextUsed:250,window:1000,total:{total:500},last:{input:240,output:10},parts:[{key:'history',label:'History',units:5,percent:100}],visibleUnits:5,rows:[]}};
           window.push=()=>window.dispatchEvent(new MessageEvent('message',{data:state}));push();

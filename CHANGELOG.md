@@ -1,19 +1,23 @@
+## 0.8.0
+
+- Unify the product name as **Codex Context Lens**, with package ID `ruoyu-li.codex-context-lens` and repository `CodexContextLens`.
+- Rename commands/settings to `codexContextLens.*`, update all interface text, guides and metadata, and regenerate both language screenshot sets.
+- Earlier previews use a different extension identity and settings namespace. Uninstall those builds and re-enter custom settings when upgrading.
+
 ## 0.7.1
 
-- Change the internal extension name to `codex-lenz` after Marketplace rejected the occupied `codex-lens` name. Public identity is now `ruoyu-li.codex-lenz`; display name remains **Codex Lens**.
-- Update installation and migration instructions. Runtime behavior and bilingual UI are unchanged.
-- Availability of the new name remains subject to Marketplace validation.
+- Correct the unpublished package identity following a Marketplace name collision; update installation instructions. Runtime behavior was unchanged.
 
 ## 0.7.0
 
 - Add English and Simplified Chinese dashboards, hover charts, session picker, diagnostics, command names and settings labels.
-- Follow VS Code by default; `codexLens.language` optionally overrides runtime views. Switching languages preserves pinned sessions and keeps user text unchanged.
+- Follow VS Code by default; `codexContextLens.language` optionally overrides runtime views. Switching languages preserves pinned sessions and keeps user text unchanged.
 - Generate separate English and Chinese screenshot sets and match them to each README.
 - Add language fallback, translation completeness, live switching and SVG layout checks. Native hover redraw behavior is unchanged.
 
 ## 0.6.0
 
-First public-source preview, under `ruoyu-li.codex-lens` with display name **Codex Lens**. Includes bilingual documentation, synthetic product screenshots, installation/migration guidance, support templates and CI. The 0.5.2 runtime refresh behavior is retained; native hover redraw remains a documented limitation. Marketplace publication is pending.
+First public-source preview under the earlier development identity. Includes bilingual documentation, synthetic product screenshots, installation/migration guidance, support templates and CI. The 0.5.2 runtime refresh behavior is retained; native hover redraw remains a documented limitation. Marketplace publication is pending.
 
 Earlier entries describe personal-preview builds under the legacy extension identity.
 
@@ -55,7 +59,7 @@ Earlier entries describe personal-preview builds under the legacy extension iden
 
 # 0.2.2
 
-- 修复持续悬停时提示框闪烁：按需悬浮模式下，底部入口固定为 **Codex Lens**。启动后不再周期性重写该状态栏项的 text、tooltip 或 provider。
+- 修复持续悬停时提示框闪烁：按需悬浮模式下，底部入口固定为 **Codex Context Lens**。启动后不再周期性重写该状态栏项的 text、tooltip 或 provider。
 - 每次重新悬停仍扫描并增量读取最新日志；后台继续刷新统计数据及已打开的详细面板。
 - 悬浮卡片显示期间保持当前这次读取结果，避免重绘。需要看后续数据时移出再移入；卡片中的“立即刷新”可先刷新缓存，下次悬停显示最新结果。
 - 0.2.1 仅阻止 provider 执行期间的更新，没有覆盖 provider 返回后仍然可见的卡片，因此防护不充分。此版本使用固定入口，不依赖取消令牌推断鼠标是否离开。

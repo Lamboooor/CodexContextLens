@@ -1,9 +1,9 @@
 'use strict';
 const api = acquireVsCodeApi();
-let locale = LensI18n.language(document.documentElement?.lang || 'en');
-const t = (zh,en) => LensI18n.translator(locale)(zh,en);
-const category = part => LensI18n.category(part.key,part.label,locale);
-LensI18n.localize(document,locale);
+let locale = ContextLensI18n.language(document.documentElement?.lang || 'en');
+const t = (zh,en) => ContextLensI18n.translator(locale)(zh,en);
+const category = part => ContextLensI18n.category(part.key,part.label,locale);
+ContextLensI18n.localize(document,locale);
 let renderRoot = null;
 const $ = id => renderRoot ? renderRoot.querySelector('#'+id) : document.getElementById(id);
 const colors = ['#5b9ee6','#4fd1b0','#d7b36c','#a48bd5','#dc8d9f','#83b9b7','#a4aece','#bcaa87'];
@@ -36,13 +36,13 @@ function reconcile(current, next) {
   if(current.tagName==='SELECT' && current.value!==next.value)current.value=next.value;
 }
 function render(data) {
-  locale = LensI18n.language(data.language || locale);
+  locale = ContextLensI18n.language(data.language || locale);
   if(document.documentElement)document.documentElement.lang=locale;
-  if(document.head)LensI18n.localize(document.head,locale);
+  if(document.head)ContextLensI18n.localize(document.head,locale);
   const root=document.querySelector?.('main');
   if(!root) { renderContent(data); return; }
   const next=root.cloneNode(true);
-  try { renderRoot=next; LensI18n.localize(next,locale); renderContent(data); } finally { renderRoot=null; }
+  try { renderRoot=next; ContextLensI18n.localize(next,locale); renderContent(data); } finally { renderRoot=null; }
   reconcile(root,next);
 }
 function renderContent(data) {

@@ -6,17 +6,17 @@ Check **View → Appearance → Status Bar**, confirm the extension is enabled i
 
 ## No data / 没有数据
 
-Open the full dashboard and inspect diagnostics. `codexLens.codexHome` must name the parent of `sessions`. Leave it empty to use `CODEX_HOME` or `~/.codex`. Existing logs load at startup without a new model request. Empty, unreadable or incompatible logs cannot provide counters; a large session can take time to analyze.
+Open the full dashboard and inspect diagnostics. `codexContextLens.codexHome` must name the parent of `sessions`. Leave it empty to use `CODEX_HOME` or `~/.codex`. Existing logs load at startup without a new model request. Empty, unreadable or incompatible logs cannot provide counters; a large session can take time to analyze.
 
 In a remote window, the workspace extension reads the remote filesystem. A local Codex installation does not imply that its logs are available on SSH/WSL. Do not copy authentication files as a workaround.
 
 ## Wrong conversation / 会话不一致
 
-Automatic selection matches the workspace directory, then falls back to the most recent main session with a notice. It does not track the official chat tab. Use **Codex Lens: 选择并固定会话** to pin the intended log; choose automatic mode to unpin.
+Automatic selection matches the workspace directory, then falls back to the most recent main session with a notice. It does not track the official chat tab. Use **Codex Context Lens: 选择并固定会话** to pin the intended log; choose automatic mode to unpin.
 
 ## Hover flickers or looks old / 悬浮闪烁或旧数据
 
-The stable VS Code tooltip API replaces the whole card when content changes. Automatic updates use a five-second coalescing window; this reduces redraw frequency but cannot eliminate flicker. The live sidebar updates individual DOM elements. Set `codexLens.autoRefreshHover` to false for a manual hover snapshot, or keep using the sidebar for live monitoring. A current read does not imply a new token record exists in the log.
+The stable VS Code tooltip API replaces the whole card when content changes. Automatic updates use a five-second coalescing window; this reduces redraw frequency but cannot eliminate flicker. The live sidebar updates individual DOM elements. Set `codexContextLens.autoRefreshHover` to false for a manual hover snapshot, or keep using the sidebar for live monitoring. A current read does not imply a new token record exists in the log.
 
 ## No weekly quota / 缺少七天额度
 
@@ -28,6 +28,6 @@ Cached input is a subset of input; reasoning output is a subset of output. Sessi
 
 ## Duplicate entries after upgrading / 升级后有两个入口
 
-The personal preview and public identity are separate extensions. Remove `lambo-local.codex-lens-local` and keep `ruoyu-li.codex-lenz`. See [installation](docs/INSTALLATION.md). Reload afterward.
+The personal preview and public identity are separate extensions. Uninstall earlier preview builds and keep `ruoyu-li.codex-context-lens`. Re-enter custom settings under `codexContextLens.*`. See [installation](docs/INSTALLATION.md). Reload afterward.
 
 Still stuck? Follow [SUPPORT.md](SUPPORT.md). 请先脱敏再提交问题。

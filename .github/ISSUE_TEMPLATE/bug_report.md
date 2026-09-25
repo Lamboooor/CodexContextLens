@@ -7,7 +7,7 @@ assignees: ""
 ---
 
 **Versions / 版本**
-- Codex Lens:
+- Codex Context Lens:
 - VS Code:
 - OS:
 - Codex:

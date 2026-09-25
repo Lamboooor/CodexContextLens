@@ -5,7 +5,7 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 const vm = require('node:vm');
 const crypto = require('node:crypto');
-const root = process.env.CODEX_LENS_TEST_ROOT || path.resolve(__dirname,'..');
+const root = process.env.CODEX_CONTEXT_LENS_TEST_ROOT || path.resolve(__dirname,'..');
 async function main(){
   class MarkdownString { constructor(){this.value='';} appendMarkdown(value){this.value+=value;return this;} }
   let statusWrites=0, autoRefreshHover=true, languageOption='auto';
@@ -30,7 +30,7 @@ async function main(){
   sandbox.module.exports.activate(context);
   await new Promise(resolve=>setImmediate(resolve));
   assert.equal(updates,1);assert.equal(commands.size,5);
-  await commands.get('codexLens.open')();assert.ok(!panel.webview.html.includes('{{'));assert.ok(panel.webview.html.includes("connect-src 'none'"));
+  await commands.get('codexContextLens.open')();assert.ok(!panel.webview.html.includes('{{'));assert.ok(panel.webview.html.includes("connect-src 'none'"));
   await receive({type:'ready'});assert.equal(sent.at(-1).snapshot.id,'session-a');assert.ok(sent.at(-1).selectionNote);assert.equal(sent.at(-1).snapshot.file,'/codex/sessions/a.jsonl','auto selection skips internal review sessions');
   await receive({type:'select',file:'/private/auth.json'});assert.equal(state.get('selectedSession'),undefined);
   await receive({type:'select',file:'/codex/sessions/a.jsonl'});assert.equal(state.get('selectedSession'),'/codex/sessions/a.jsonl');assert.equal(sent.at(-1).pinned,true);
@@ -56,14 +56,14 @@ async function main(){
   assert.equal([...timers.entries()].find(([,t])=>t.delay===5000)[0],cardTimers[0][0],'continuous changes do not postpone publication');
   timers.delete(cardTimers[0][0]);cardTimers[0][1].fn();
   assert.ok(status.tooltip.value.includes('27%'),'latest pending sample appears without a manual command');
-  await commands.get('codexLens.refresh')();assert.ok(status.tooltip.value.includes('27%'));
-  assert.equal(status.label,'$(pulse) Codex Lens','status anchor never moves');
+  await commands.get('codexContextLens.refresh')();assert.ok(status.tooltip.value.includes('27%'));
+  assert.equal(status.label,'$(pulse) Codex Context Lens','status anchor never moves');
   assert.equal(statusWrites,writes+1,'only changed card is published');
   assert.equal([...timers.values()].filter(t=>t.delay===5000).length,0,'identical refresh does not queue a redraw');
   version++;
   await receive({type:'refresh'});
   assert.equal([...timers.values()].filter(t=>t.delay===5000).length,1);
-  await commands.get('codexLens.refresh')();
+  await commands.get('codexContextLens.refresh')();
   assert.ok(status.tooltip.value.includes('28%'));
   assert.equal([...timers.values()].filter(t=>t.delay===5000).length,0,'explicit refresh cancels pending duplicate');
   watcher.change('/codex/sessions/review.jsonl','change');
@@ -78,13 +78,13 @@ async function main(){
   console.log('PASS sidebar receives existing snapshot immediately on resolve');
   await receive({type:'select',file:'/codex/sessions/a.jsonl'});
   languageOption='zh-CN';
-  configChanged({affectsConfiguration:key=>key==='codexLens'||key==='codexLens.language'});
+  configChanged({affectsConfiguration:key=>key==='codexContextLens'||key==='codexContextLens.language'});
   await new Promise(resolve=>setImmediate(resolve));
   assert.equal(state.get('selectedSession'),'/codex/sessions/a.jsonl','language change preserves pinned session');
   assert.equal(sidebarMessages.at(-1).language,'zh-CN');
   assert.ok(status.tooltip.value.includes('固定会话'));
   languageOption='en';
-  configChanged({affectsConfiguration:key=>key==='codexLens'||key==='codexLens.language'});
+  configChanged({affectsConfiguration:key=>key==='codexContextLens'||key==='codexContextLens.language'});
   await new Promise(resolve=>setImmediate(resolve));
   assert.ok(status.tooltip.value.includes('Pinned session'));
   autoRefreshHover=false;

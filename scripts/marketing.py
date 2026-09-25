@@ -21,7 +21,7 @@ if not node:
     if location.exists():node=str(root/'.tools'/location.read_text().strip()/'node.exe')
 if not node:raise RuntimeError('Node.js required to render the actual hover chart')
 media=root/'media'
-base_html=(media/'dashboard.html').read_text(encoding='utf8').replace('{{NONCE}}','demo').replace('{{CSP}}','http://lens.test').replace('{{CSS}}','http://lens.test/dashboard.css').replace('{{JS}}','http://lens.test/dashboard.js').replace('{{I18N}}','http://lens.test/i18n.js')
+base_html=(media/'dashboard.html').read_text(encoding='utf8').replace('{{NONCE}}','demo').replace('{{CSP}}','http://context-lens.test').replace('{{CSS}}','http://context-lens.test/dashboard.css').replace('{{JS}}','http://context-lens.test/dashboard.js').replace('{{I18N}}','http://context-lens.test/i18n.js')
 with sync_playwright() as p:
     browser=p.chromium.launch(channel='msedge',headless=True,args=['--disable-gpu','--mute-audio','--disable-background-networking'])
     try:
@@ -35,9 +35,9 @@ with sync_playwright() as p:
             html=base_html.replace('{{LANG}}',language)
             page=browser.new_page(viewport={'width':1100,'height':1100},device_scale_factor=1,timezone_id='UTC')
             errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
-            page.route('http://lens.test/**',lambda route:route.fulfill(body=html,content_type='text/html') if route.request.url.endswith('/') else route.fulfill(path=str(media/route.request.url.rsplit('/',1)[-1])))
+            page.route('http://context-lens.test/**',lambda route:route.fulfill(body=html,content_type='text/html') if route.request.url.endswith('/') else route.fulfill(path=str(media/route.request.url.rsplit('/',1)[-1])))
             page.add_init_script("Date.now=()=>Date.parse('2026-09-25T12:00:00Z');window.acquireVsCodeApi=()=>({postMessage:()=>{}})")
-            page.goto('http://lens.test/')
+            page.goto('http://context-lens.test/')
             page.evaluate("data=>window.dispatchEvent(new MessageEvent('message',{data}))",state)
             assert '{{i18n:' not in page.locator('main').inner_text()
             if language=='en':assert not page.evaluate(r"/[\u4e00-\u9fff]/.test(document.body.innerText)")

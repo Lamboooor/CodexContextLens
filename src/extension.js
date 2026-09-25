@@ -17,9 +17,9 @@ function activate(context) {
   let chosen = context.workspaceState.get('selectedSession', '');
   const metadataCache = new Map();
   const status = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 95);
-  status.name = 'Codex Lens'; status.command = 'codexLens.sidebar';
-  status.text = '$(pulse) Codex Lens'; status.show();
-  const cfg = () => vscode.workspace.getConfiguration('codexLens');
+  status.name = 'Codex Context Lens'; status.command = 'codexContextLens.sidebar';
+  status.text = '$(pulse) Codex Context Lens'; status.show();
+  const cfg = () => vscode.workspace.getConfiguration('codexContextLens');
   const language = () => i18n.language(cfg().get('language', 'auto'), vscode.env.language);
   const t = (zh,en) => i18n.translator(language())(zh,en);
   const home = () => codexHome(cfg().get('codexHome', ''));
@@ -152,7 +152,7 @@ function activate(context) {
   }
   async function open() {
     if (panel) { panel.reveal(); publish(); return; }
-    panel = vscode.window.createWebviewPanel('codexLens', t('Codex Lens · 用量透镜', 'Codex Lens · Usage dashboard'), vscode.ViewColumn.Beside, { enableScripts: true, localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'media')] });
+    panel = vscode.window.createWebviewPanel('codexContextLens', t('Codex Context Lens · 用量透镜', 'Codex Context Lens · Usage dashboard'), vscode.ViewColumn.Beside, { enableScripts: true, localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'media')] });
     await setupView(panel, false);
   }
   async function setupView(current, isSidebar) {
@@ -170,7 +170,7 @@ function activate(context) {
       else if (message.type === 'refresh') await refresh(true);
       else if (message.type === 'select' && typeof message.file === 'string') await select(message.file);
       else if (message.type === 'picker') await picker();
-      else if (message.type === 'settings') await vscode.commands.executeCommand('workbench.action.openSettings', 'codexLens');
+      else if (message.type === 'settings') await vscode.commands.executeCommand('workbench.action.openSettings', 'codexContextLens');
     });
     // Register the ready handler before the page can execute its startup script.
     webview.html = i18n.html(template,language()).replaceAll('{{CSP}}', webview.cspSource).replaceAll('{{NONCE}}', nonce)
@@ -181,16 +181,16 @@ function activate(context) {
 
   }
   context.subscriptions.push(status,
-    vscode.commands.registerCommand('codexLens.open', open),
-    vscode.commands.registerCommand('codexLens.select', picker),
-    vscode.commands.registerCommand('codexLens.refresh', async () => { await refresh(true); flushCard(); }),
-    vscode.commands.registerCommand('codexLens.sidebar', () => vscode.commands.executeCommand('codexLens.live.focus')),
-    vscode.window.registerWebviewViewProvider('codexLens.live', { async resolveWebviewView(view) { sidebar = view; await setupView(view, true); await refresh(true); } }),
-    vscode.commands.registerCommand('codexLens.settings', () => vscode.commands.executeCommand('workbench.action.openSettings', 'codexLens')),
+    vscode.commands.registerCommand('codexContextLens.open', open),
+    vscode.commands.registerCommand('codexContextLens.select', picker),
+    vscode.commands.registerCommand('codexContextLens.refresh', async () => { await refresh(true); flushCard(); }),
+    vscode.commands.registerCommand('codexContextLens.sidebar', () => vscode.commands.executeCommand('codexContextLens.live.focus')),
+    vscode.window.registerWebviewViewProvider('codexContextLens.live', { async resolveWebviewView(view) { sidebar = view; await setupView(view, true); await refresh(true); } }),
+    vscode.commands.registerCommand('codexContextLens.settings', () => vscode.commands.executeCommand('workbench.action.openSettings', 'codexContextLens')),
     vscode.workspace.onDidChangeConfiguration(e => {
-      if (!e.affectsConfiguration('codexLens')) return;
-      if (e.affectsConfiguration('codexLens.language') && !['codexHome','maxSessions','refreshSeconds'].some(key=>e.affectsConfiguration('codexLens.'+key))) {
-        if(panel)panel.title=t('Codex Lens · 用量透镜','Codex Lens · Usage dashboard');
+      if (!e.affectsConfiguration('codexContextLens')) return;
+      if (e.affectsConfiguration('codexContextLens.language') && !['codexHome','maxSessions','refreshSeconds'].some(key=>e.affectsConfiguration('codexContextLens.'+key))) {
+        if(panel)panel.title=t('Codex Context Lens · 用量透镜','Codex Context Lens · Usage dashboard');
         void refresh().then(flushCard); return;
       }
       clearTimeout(watchTimer); watchTimer = null; watchForce = false;

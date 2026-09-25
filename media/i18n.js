@@ -1,11 +1,11 @@
 'use strict';
-(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.LensI18n=api;})(globalThis,()=>{
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.ContextLensI18n=api;})(globalThis,()=>{
   const strings={
   "contextHeading": ["上下文", "CONTEXT"],
   "sessionHeading": ["会话 TOKEN", "SESSION TOKENS"],
   "s0": [
-    "Codex Lens · 用量透镜",
-    "Codex Lens · Usage dashboard"
+    "Codex Context Lens · 用量透镜",
+    "Codex Context Lens · Usage dashboard"
   ],
   "s1": [
     "看清每一次对话的用量",
@@ -140,8 +140,8 @@
     "Analysis stays local. No auth.json access, network requests, Codex configuration changes, hook injection or model calls. Remote windows read logs on the remote extension host."
   ],
   "s34": [
-    "预览版 0.7.1 · 本地日志观测，不是账单",
-    "Preview 0.7.1 · Local log insights, not billing"
+    "预览版 0.8.0 · 本地日志观测，不是账单",
+    "Preview 0.8.0 · Local log insights, not billing"
   ],
   "s35": [
     "搜索所有发现的会话",

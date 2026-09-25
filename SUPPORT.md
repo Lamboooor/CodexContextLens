@@ -1,6 +1,6 @@
 # Support / 支持
 
-Use [GitHub Issues](https://github.com/Lamboooor/CodexLenz/issues/new/choose) for bugs and feature requests. Search existing issues first. This is a community project with no guaranteed response time.
+Use [GitHub Issues](https://github.com/Lamboooor/CodexContextLens/issues/new/choose) for bugs and feature requests. Search existing issues first. This is a community project with no guaranteed response time.
 
 ## A useful bug report
 

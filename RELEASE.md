@@ -1,10 +1,10 @@
-# Release readiness · 0.7.1
+# Release readiness · 0.8.0
 
 ## Confirmed by the maintainer
 
-- Publisher ID: `ruoyu-li`; display name: **Codex Lens**.
-- Extension identity: `ruoyu-li.codex-lenz`.
-- Public repository: https://github.com/Lamboooor/CodexLenz
+- Publisher ID: `ruoyu-li`; display name: **Codex Context Lens**.
+- Extension identity: `ruoyu-li.codex-context-lens`.
+- Public repository: https://github.com/Lamboooor/CodexContextLens
 - MIT license retained; public source upload authorized.
 - 0.6.0 preview behavior accepted, including native-hover redraw limitations. This does not imply clean-install or cross-platform visual acceptance.
 
@@ -16,7 +16,7 @@ English/Simplified Chinese interface and localized manifest, bilingual README, l
 
 1. Run tests, package inspection and identity checks against the exact candidate.
 2. Review the README/screenshots and check their public links.
-3. Confirm a clean install of `ruoyu-li.codex-lenz` without the legacy personal extension; reselect the intended session.
+3. Confirm a clean install of `ruoyu-li.codex-context-lens` without the legacy personal extension; reselect the intended session.
 4. Confirm the publisher account is accessible. Local metadata does not verify Marketplace account ownership.
 5. Obtain final authorization to publish, then upload the checked VSIX through Marketplace publisher management.
 6. After Marketplace accepts it, update installation links and publication status. Do not advertise availability before it exists.

@@ -1,6 +1,6 @@
 # Privacy / 隐私说明
 
-Applies to the Codex Lens extension runtime. Updated 2026-09-25.
+Applies to the Codex Context Lens extension runtime. Updated 2026-09-25.
 
 ## Read and process / 读取与处理
 

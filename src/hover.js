@@ -6,9 +6,9 @@ function buildHover(vscode, { snapshot: s, chosen, error, watching, selectionNot
   const t=translator(language);
   const stamp = value => value && Number.isFinite(new Date(value).getTime()) ? new Date(value).toLocaleString(language, {hour12:false}) : t('未知','Unknown');
   const md = new vscode.MarkdownString();
-  md.isTrusted = { enabledCommands: ['codexLens.refresh', 'codexLens.select', 'codexLens.open', 'codexLens.sidebar'] };
+  md.isTrusted = { enabledCommands: ['codexContextLens.refresh', 'codexContextLens.select', 'codexContextLens.open', 'codexContextLens.sidebar'] };
   md.supportHtml = false;
-  const lines = ['**Codex Lens** · '+(chosen ? t('固定会话', 'Pinned session') : t('工作区最近会话', 'Latest workspace session')), '', escape(s?.title || s?.id || t('正在读取会话记录…', 'Reading session records…')), ''];
+  const lines = ['**Codex Context Lens** · '+(chosen ? t('固定会话', 'Pinned session') : t('工作区最近会话', 'Latest workspace session')), '', escape(s?.title || s?.id || t('正在读取会话记录…', 'Reading session records…')), ''];
   if (selectionNote) lines.push(escape(selectionNote), '', escape(s?.cwd || ''), '');
   if (error) lines.push(t(`**读取失败 · 下方可能是旧数据**：${escape(error)}`, `**Read failed · values may be stale**: ${escape(error)}`), '');
   if (s?.catchingUp) lines.push(t('**历史分析中 · 数据尚不完整**', '**Analyzing history · incomplete values**'), '');
@@ -20,7 +20,7 @@ function buildHover(vscode, { snapshot: s, chosen, error, watching, selectionNot
     t('构成不含隐藏提示和图像，不代表完整上下文的 token 分账。', 'Breakdown excludes hidden prompts and images; it is not complete token attribution.'), '',
     t(`用量记录：${stamp(s?.usageAt)}  `, `Usage recorded: ${stamp(s?.usageAt)}  `),
     autoRefreshHover ? t('自动同步 · 连续变化最多每 5 秒更新卡片', 'Automatic sync · changes coalesced every 5 seconds') : t('手动快照 · 点击刷新更新数据', 'Manual snapshot · select Refresh to update'), '',
-    t('[实时视图](command:codexLens.sidebar)　[详细面板](command:codexLens.open)　[选择会话](command:codexLens.select)　[刷新](command:codexLens.refresh)', '[Live view](command:codexLens.sidebar)　[Dashboard](command:codexLens.open)　[Select session](command:codexLens.select)　[Refresh](command:codexLens.refresh)'));
+    t('[实时视图](command:codexContextLens.sidebar)　[详细面板](command:codexContextLens.open)　[选择会话](command:codexContextLens.select)　[刷新](command:codexContextLens.refresh)', '[Live view](command:codexContextLens.sidebar)　[Dashboard](command:codexContextLens.open)　[Select session](command:codexContextLens.select)　[Refresh](command:codexContextLens.refresh)'));
   md.appendMarkdown(lines.join('\n'));
   return md;
 }

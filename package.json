@@ -1,8 +1,8 @@
 {
-  "name": "codex-lenz",
-  "displayName": "Codex Lens",
+  "name": "codex-context-lens",
+  "displayName": "Codex Context Lens",
   "description": "Local Codex token usage, context insights and quota snapshots in VS Code.",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "publisher": "ruoyu-li",
   "license": "MIT",
   "engines": {
@@ -27,55 +27,55 @@
   "contributes": {
     "commands": [
       {
-        "command": "codexLens.open",
+        "command": "codexContextLens.open",
         "title": "%command.open%"
       },
       {
-        "command": "codexLens.select",
+        "command": "codexContextLens.select",
         "title": "%command.select%"
       },
       {
-        "command": "codexLens.refresh",
+        "command": "codexContextLens.refresh",
         "title": "%command.refresh%"
       },
       {
-        "command": "codexLens.settings",
+        "command": "codexContextLens.settings",
         "title": "%command.settings%"
       },
       {
-        "command": "codexLens.sidebar",
+        "command": "codexContextLens.sidebar",
         "title": "%command.sidebar%"
       }
     ],
     "configuration": {
-      "title": "Codex Lens",
+      "title": "Codex Context Lens",
       "properties": {
-        "codexLens.codexHome": {
+        "codexContextLens.codexHome": {
           "type": "string",
           "default": "",
           "scope": "machine",
           "description": "%setting.codexHome%"
         },
-        "codexLens.refreshSeconds": {
+        "codexContextLens.refreshSeconds": {
           "type": "number",
           "default": 15,
           "minimum": 5,
           "maximum": 300,
           "description": "%setting.refreshSeconds%"
         },
-        "codexLens.maxSessions": {
+        "codexContextLens.maxSessions": {
           "type": "number",
           "default": 80,
           "minimum": 5,
           "maximum": 300,
           "description": "%setting.maxSessions%"
         },
-        "codexLens.autoRefreshHover": {
+        "codexContextLens.autoRefreshHover": {
           "type": "boolean",
           "default": true,
           "description": "%setting.autoRefreshHover%"
         },
-        "codexLens.language": {
+        "codexContextLens.language": {
           "type": "string",
           "enum": [
             "auto",
@@ -97,7 +97,7 @@
       "explorer": [
         {
           "type": "webview",
-          "id": "codexLens.live",
+          "id": "codexContextLens.live",
           "name": "%view.live%"
         }
       ]
@@ -127,11 +127,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Lamboooor/CodexLenz.git"
+    "url": "https://github.com/Lamboooor/CodexContextLens.git"
   },
-  "homepage": "https://github.com/Lamboooor/CodexLenz#readme",
+  "homepage": "https://github.com/Lamboooor/CodexContextLens#readme",
   "bugs": {
-    "url": "https://github.com/Lamboooor/CodexLenz/issues"
+    "url": "https://github.com/Lamboooor/CodexContextLens/issues"
   },
   "author": "Ruoyu Li"
 }

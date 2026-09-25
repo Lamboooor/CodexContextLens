@@ -75,7 +75,7 @@ async function main() {
     a.feed(event('response_item',{type:'message',role:'user',content:[null,{text:'ok'}]}));
     assert.equal(a.snapshot().errors,2);assert.equal(a.snapshot().visibleUnits,2);
   });
-  const temp=await fs.mkdtemp(path.join(os.tmpdir(),'codex-lens-test-'));
+  const temp=await fs.mkdtemp(path.join(os.tmpdir(),'codex-context-lens-test-'));
   try {
     const dir=path.join(temp,'sessions','2026','09','25');await fs.mkdir(dir,{recursive:true});
     const file=path.join(dir,'rollout.jsonl');
@@ -97,7 +97,7 @@ async function main() {
     addEventListener(type,handler){this.listeners[type]=handler;}
   }
   const ids=new Map(),messages=[],handlers={};
-  const sandbox={LensI18n:require('../media/i18n'),setTimeout:()=>0,clearTimeout:()=>{},document:{getElementById:id=>{if(!ids.has(id))ids.set(id,new Element(id));return ids.get(id);},createElement:tag=>new Element(tag)},window:{addEventListener:(type,handler)=>handlers[type]=handler},acquireVsCodeApi:()=>({postMessage:m=>messages.push(m)}),console};
+  const sandbox={ContextLensI18n:require('../media/i18n'),setTimeout:()=>0,clearTimeout:()=>{},document:{getElementById:id=>{if(!ids.has(id))ids.set(id,new Element(id));return ids.get(id);},createElement:tag=>new Element(tag)},window:{addEventListener:(type,handler)=>handlers[type]=handler},acquireVsCodeApi:()=>({postMessage:m=>messages.push(m)}),console};
   vm.runInNewContext(await fs.readFile(path.join(__dirname,'../media/dashboard.js'),'utf8'),sandbox);
   const a=new UsageAccumulator();a.feed(count(usage(500,20,400)));
   const state={type:'state',sessions:[{file:'a',id:'a',title:'<img onerror=evil()>',cwd:'/tmp'}],snapshot:a.snapshot(),home:'/tmp',selected:'a',pinned:true,inventory:{count:1,errors:[]}};

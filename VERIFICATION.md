@@ -32,4 +32,8 @@ Language resolution, full static-template translation, chart/hover labels and ma
 
 ## 0.7.1 publication identity correction
 
-Marketplace rejected the internal name `codex-lens`. The manifest, lockfile and current installation documentation now use `codex-lenz` / `ruoyu-li.codex-lenz`. Historical changelog entries retain their original identities. No runtime logic changed. The new name is not reserved by building a VSIX; Marketplace must still accept the upload.
+Marketplace rejected the earlier package name. An alternative unpublished candidate was prepared and checked. No runtime logic changed.
+
+## 0.8.0 complete product rename
+
+Public name searches found no exact existing Marketplace or GitHub match for Codex Context Lens at preparation time. This does not reserve the name or guarantee Marketplace acceptance. Current-source branding, command/configuration identifiers, docs, package metadata and bilingual screenshot generation are updated together. Earlier Git commits are preserved as history.
