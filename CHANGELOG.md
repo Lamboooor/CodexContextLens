@@ -1,3 +1,9 @@
+## 0.7.1
+
+- Change the internal extension name to `codex-lenz` after Marketplace rejected the occupied `codex-lens` name. Public identity is now `ruoyu-li.codex-lenz`; display name remains **Codex Lens**.
+- Update installation and migration instructions. Runtime behavior and bilingual UI are unchanged.
+- Availability of the new name remains subject to Marketplace validation.
+
 ## 0.7.0
 
 - Add English and Simplified Chinese dashboards, hover charts, session picker, diagnostics, command names and settings labels.

@@ -1,8 +1,8 @@
 {
-  "name": "codex-lens",
+  "name": "codex-lenz",
   "displayName": "Codex Lens",
   "description": "Local Codex token usage, context insights and quota snapshots in VS Code.",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "publisher": "ruoyu-li",
   "license": "MIT",
   "engines": {

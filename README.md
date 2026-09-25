@@ -92,4 +92,4 @@ npm test
 npm run package:local
 ```
 
-The package identity is `ruoyu-li.codex-lens`. Building does not publish or install the extension. See the [contributor guide](CONTRIBUTING.md), [release checklist](RELEASE.md) and [changelog](CHANGELOG.md). The repository name is **CodexLenz**; the product name is **Codex Lens**.
+The package identity is `ruoyu-li.codex-lenz`. Building does not publish or install the extension. See the [contributor guide](CONTRIBUTING.md), [release checklist](RELEASE.md) and [changelog](CHANGELOG.md). The repository name is **CodexLenz**; the product name is **Codex Lens**.

@@ -28,6 +28,6 @@ Cached input is a subset of input; reasoning output is a subset of output. Sessi
 
 ## Duplicate entries after upgrading / 升级后有两个入口
 
-The personal preview and public identity are separate extensions. Remove `lambo-local.codex-lens-local` and keep `ruoyu-li.codex-lens`. See [installation](docs/INSTALLATION.md). Reload afterward.
+The personal preview and public identity are separate extensions. Remove `lambo-local.codex-lens-local` and keep `ruoyu-li.codex-lenz`. See [installation](docs/INSTALLATION.md). Reload afterward.
 
 Still stuck? Follow [SUPPORT.md](SUPPORT.md). 请先脱敏再提交问题。

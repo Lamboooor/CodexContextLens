@@ -140,8 +140,8 @@
     "Analysis stays local. No auth.json access, network requests, Codex configuration changes, hook injection or model calls. Remote windows read logs on the remote extension host."
   ],
   "s34": [
-    "预览版 0.7.0 · 本地日志观测，不是账单",
-    "Preview 0.7.0 · Local log insights, not billing"
+    "预览版 0.7.1 · 本地日志观测，不是账单",
+    "Preview 0.7.1 · Local log insights, not billing"
   ],
   "s35": [
     "搜索所有发现的会话",

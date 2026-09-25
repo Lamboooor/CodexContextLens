@@ -29,3 +29,7 @@ An earlier local comparison of 94 recorded snapshots and 48 boundary combination
 ## Bilingual preview 0.7.0
 
 Language resolution, full static-template translation, chart/hover labels and manifest translation-key completeness pass automated checks. Host tests cover live language changes preserving a pinned session. Headless Edge checks English copy without untranslated Chinese, Chinese labels, user text preservation, focus/node stability and both language screenshot sets. SVG label bounds are checked and both full dashboard layouts plus the English narrow sidebar and hover were visually reviewed. No foreground/native mouse automation was performed.
+
+## 0.7.1 publication identity correction
+
+Marketplace rejected the internal name `codex-lens`. The manifest, lockfile and current installation documentation now use `codex-lenz` / `ruoyu-li.codex-lenz`. Historical changelog entries retain their original identities. No runtime logic changed. The new name is not reserved by building a VSIX; Marketplace must still accept the upload.

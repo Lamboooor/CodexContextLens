@@ -31,4 +31,4 @@
 All sample titles, paths, timestamps and metrics are invented. No real prompts, logs or account information are used. Public README images use HTTPS URLs hosted in this repository. Native tooltip updates may redraw; continuous monitoring uses the live sidebar.
 
 
-Confirmed publisher: `ruoyu-li`. Display name: `Codex Lens`. Public ID: `ruoyu-li.codex-lens`. Source/support: https://github.com/Lamboooor/CodexLenz. Marketplace publication remains pending.
+Confirmed publisher: `ruoyu-li`. Display name: `Codex Lens`. Public ID: `ruoyu-li.codex-lenz`. Source/support: https://github.com/Lamboooor/CodexLenz. Marketplace publication remains pending.

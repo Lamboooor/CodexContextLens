@@ -2,7 +2,7 @@
 
 ## Availability
 
-Codex Lens is currently a source-available early preview under MIT. Marketplace publication has not occurred. The intended extension ID is `ruoyu-li.codex-lens`. Do not assume similarly named Marketplace listings are this project.
+Codex Lens is currently a source-available early preview under MIT. Marketplace publication has not occurred. The intended extension ID is `ruoyu-li.codex-lenz`. Do not assume similarly named Marketplace listings are this project.
 
 ## Build and install
 
@@ -16,14 +16,14 @@ npm test
 npm run package:local
 ```
 
-The VSIX is written to `dist/codex-lens-<version>-candidate.vsix`. Open VS Code's command palette, run **Extensions: Install from VSIX…**, select that file, then **Developer: Reload Window**. Open the bottom **Codex Lens** entry. No account sign-in or experimental flags are needed by this extension.
+The VSIX is written to `dist/codex-lenz-<version>-candidate.vsix`. Open VS Code's command palette, run **Extensions: Install from VSIX…**, select that file, then **Developer: Reload Window**. Open the bottom **Codex Lens** entry. No account sign-in or experimental flags are needed by this extension.
 
 `npm run check:package` additionally inspects the archive and requires Python 3. Build commands never publish or install automatically. npm downloads development dependencies; the installed extension itself makes no network requests.
 
 ## Upgrade from the personal preview
 
 1. In Extensions, find `@id:lambo-local.codex-lens-local` and uninstall it.
-2. Install the new VSIX with identity `ruoyu-li.codex-lens`.
+2. Install the new VSIX with identity `ruoyu-li.codex-lenz`.
 3. Reload VS Code and choose the intended session again.
 
 The two identities are not an in-place Marketplace upgrade. Existing `codexLens.*` settings normally remain in VS Code settings, but the pinned session is extension-specific and must be selected again. Codex session logs are never removed by the extension.
@@ -41,3 +41,7 @@ Uninstall Codex Lens from the Extensions view. You can optionally remove its `co
 The UI follows VS Code by default (`codexLens.language: auto`). Choose `en` for English or `zh-CN` for Simplified Chinese in Settings. The override applies to live views, hover and session picker; command names and settings labels follow VS Code itself. Chinese locale variants use Simplified Chinese; other languages fall back to English. Switching languages preserves your pinned session.
 
 设置中搜索 `codexLens.language`，可选择跟随 VS Code、English 或简体中文。切换语言不会翻译会话原文，也不会改变 token 统计。
+
+## Rejected publication name
+
+The earlier `codex-lens` candidate was rejected because the Marketplace name was already taken. The new internal name is `codex-lenz`; the display name remains **Codex Lens**. If you installed the unpublished `ruoyu-li.codex-lens` candidate locally, uninstall it before installing `ruoyu-li.codex-lenz` to avoid duplicate entries.

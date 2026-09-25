@@ -72,4 +72,4 @@
 
 Node.js 22+；运行 `npm ci --ignore-scripts`、`npm test`、`npm run package:local`。详见[贡献指南](CONTRIBUTING.md)。
 
-MIT 许可证。发布身份为 `ruoyu-li.codex-lens`；GitHub 仓库名为 **CodexLenz**，产品名为 **Codex Lens**。
+MIT 许可证。发布身份为 `ruoyu-li.codex-lenz`；GitHub 仓库名为 **CodexLenz**，产品名为 **Codex Lens**。
