@@ -1,0 +1,27 @@
+# Validation scope
+
+## Public preview 0.6.0
+
+This release changes product identity, packaging and documentation. Runtime behavior is inherited from 0.5.2.
+
+The local Windows checks cover 15 synthetic parser/dashboard cases, Markdown escaping, a mocked VS Code host, and actual temporary-directory filesystem notifications. The optional headless Edge regression preserves the main container, numeric text, category nodes and focus through 30 updates. Package inspection checks archive integrity, allowed files, manifest flags and limited secret/path patterns; it is not an exhaustive security audit.
+
+The maintainer accepted the current preview experience with the native-hover redraw limitation disclosed. A fresh interactive install of the new public identity has not yet been verified. Linux, macOS and remote hosts remain unverified. CI currently repeats the synthetic and packaging checks on Windows.
+
+All product screenshots are generated from synthetic data. No actual logs or private screenshots are published. Tests do not move the system pointer, inject global input or open foreground UI.
+
+## Reproduce
+
+```sh
+npm ci --ignore-scripts
+npm test
+npm run package:local
+npm run check:package
+npm run check:release
+```
+
+The package checker needs Python 3. Optional browser tests require Playwright and Edge; see CONTRIBUTING.md. A passing release check validates metadata, not Marketplace ownership, review or publication.
+
+## Metric calibration
+
+An earlier local comparison of 94 recorded snapshots and 48 boundary combinations matched the inspected official context indicator formula. This applies to the particular locally inspected Codex version and does not guarantee future log/API compatibility. Private inputs are not published. See ACCURACY.md for the formula and measurement boundaries.

@@ -1,0 +1,32 @@
+'use strict';
+const xml = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+const compact = n => !Number.isFinite(n) ? '—' : n >= 1e6 ? (n/1e6).toFixed(2)+'M' : n >= 1000 ? (n/1000).toFixed(1)+'k' : String(n);
+const labels = { history:'历史对话', prompt:'本轮提问', files:'文件读取', tools:'工具结果', instructions:'可见指令', assistant:'助手文本', reasoning:'推理摘要', calls:'调用参数' };
+function chart(s, light = false) {
+  const bg=light?'#f7f9fc':'#18212d', tile=light?'#eaf0f7':'#222f40', fg=light?'#192b42':'#f0f5fc', muted=light?'#506078':'#a4b5ca', edge=light?'#d5dfec':'#334359';
+  const pct=Number.isFinite(s?.contextPercent)?Math.max(0,Math.min(100,s.contextPercent)):null;
+  const accent=pct>=90?'#ef826f':pct>=75?'#e9b65e':light?'#00856f':'#4dd6b6';
+  const colors=['#6bafff','#b29af4','#e9b65e','#849bb5'];
+  const parts=(s?.parts||[]).filter(p=>Number.isFinite(p.percent)&&p.percent>0).sort((a,b)=>b.percent-a.percent);
+  const shown=parts.slice(0,3).map(p=>({label:labels[p.key]||p.label,percent:p.percent}));
+  if(parts.length>3)shown.push({label:'其他内容',percent:parts.slice(3).reduce((n,p)=>n+p.percent,0)});
+  let out=`<svg xmlns="http://www.w3.org/2000/svg" width="400" height="338" viewBox="0 0 400 338"><rect width="400" height="338" rx="14" fill="${bg}"/><g font-family="Segoe UI,Microsoft YaHei,sans-serif">`;
+  const text=(x,y,value,size=12,color=fg,weight=400)=>{out+=`<text x="${x}" y="${y}" fill="${color}" font-size="${size}" font-weight="${weight}">${xml(value)}</text>`;};
+  text(20,28,'上下文',14,fg,600);text(253,28,'原生口径 · 日志快照',11,muted);
+  out+=`<circle cx="76" cy="99" r="44" fill="none" stroke="${edge}" stroke-width="9"/>`;
+  if(pct!==null)out+=`<circle cx="76" cy="99" r="44" fill="none" stroke="${accent}" stroke-width="9" stroke-dasharray="${pct/100*276.46} 276.46" transform="rotate(-90 76 99)"/>`;
+  out+=`<text x="76" y="105" text-anchor="middle" fill="${fg}" font-family="Segoe UI,sans-serif" font-size="26" font-weight="700">${pct===null?'—':Math.round(pct)+'%'}</text>`;
+  text(61,124,'已用',10,muted);
+  text(147,79,`${compact(s?.contextUsed)} / ${compact(s?.window)}`,25,fg,600);
+  text(147,102,`tokens · 剩余 ${compact(s?.contextRemaining)}`,12,muted);
+  text(147,127,s?.contextAfterCompaction?'压缩后等待新记录':pct===null?'等待用量记录':'最近请求总量 ÷ 上下文上限',11,muted);
+  const metrics=[['最近输入',s?.last?.input],['最近输出',s?.last?.output],['会话累计',s?.total?.total]];
+  metrics.forEach(([label,value],i)=>{const x=20+i*123;out+=`<rect x="${x}" y="157" width="114" height="59" rx="8" fill="${tile}"/>`;text(x+11,178,label,11,muted);text(x+11,202,compact(value),20,fg,600);});
+  text(20,245,'可见内容构成',13,fg,600);text(254,245,'字符占比 ≠ token 分账',10,muted);
+  out+=`<rect x="20" y="258" width="360" height="10" rx="4" fill="${edge}"/>`;
+  let x=20;shown.forEach((p,i)=>{const width=Math.max(0,Math.min(380-x,p.percent*3.6));out+=`<rect x="${x}" y="258" width="${width}" height="10" fill="${colors[i]}"/>`;x+=width;});
+  shown.forEach((p,i)=>{const x=20+(i%2)*184,y=290+Math.floor(i/2)*23;out+=`<circle cx="${x+4}" cy="${y-4}" r="4" fill="${colors[i]}"/>`;text(x+14,y,p.label,11,muted);text(x+120,y,p.percent.toFixed(1)+'%',11,fg,600);});
+  if(!shown.length)text(20,298,'暂无可见文本记录',12,muted);
+  return out+'</g></svg>';
+}
+module.exports = { chart, compact };

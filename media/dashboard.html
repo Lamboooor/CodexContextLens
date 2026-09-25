@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src {{CSP}} 'unsafe-inline'; script-src 'nonce-{{NONCE}}'; img-src {{CSP}}; connect-src 'none';">
+  <link rel="stylesheet" href="{{CSS}}">
+  <title>Codex Lens · 用量透镜</title>
+</head>
+<body>
+<main>
+  <header><div class="brand"><span class="logo">L</span><div><h1>Codex Lens</h1><p>看清每一次对话的用量</p></div></div><span class="tag">LOCAL · 只读</span></header>
+  <section class="toolbar"><label for="session">观察会话</label><select id="session" aria-label="观察会话"></select><button id="picker" title="搜索所有发现的会话">选择</button><button id="refresh">刷新</button><button id="settings" title="数据源设置">设置</button></section>
+  <p id="selection-note" class="muted"></p>
+  <div id="error" class="notice" role="status" hidden></div>
+  <div id="loading" class="notice" hidden></div>
+  <section class="overview">
+    <article class="card context-card">
+      <div class="eyebrow">CONTEXT <span class="tag">原生口径</span></div>
+      <div class="context-body"><div class="ring" id="ring"><div><strong id="context">—</strong><span>上下文占用</span></div></div><div><h2 id="model">等待模型信息</h2><p id="context-detail">等待最近请求</p><p class="muted">最近请求总量 ÷ 日志上限<br>不是累计消耗，也不等于压缩阈值</p></div></div>
+      <p id="context-note" class="muted"></p>
+    </article>
+    <article class="card"><div class="eyebrow">SESSION TOKENS <span class="tag exact">日志实测</span></div><strong id="total" class="hero">—</strong><p>会话累计处理 token</p><div class="metrics"><div><span>输入</span><b id="input">—</b></div><div><span>输出</span><b id="output">—</b></div><div><span>输入缓存命中</span><b id="cache">—</b></div></div><p class="muted">多次请求会重复计入历史输入；缓存属于输入的一部分，推理属于输出的一部分。</p></article>
+  </section>
+  <section class="card"><div class="section-title"><h2>可见记录构成</h2><span class="tag">文本量占比 · 非 token 分账</span></div><p class="muted">统计本地记录中可见文本的长度；压缩后从新片段重新统计。隐藏提示、图片及加密推理无法归因，这张图不代表模型当前完整上下文。</p><div id="stack" class="stack" role="img" aria-label="可见记录构成"></div><div id="parts" class="parts"></div><details><summary>为什么不是精确的“文件占了多少 token”？</summary><p>Codex 提供请求级 token 总数，但没有完整公开每类内容的精确 token 归属。本图按文本长度（UTF-16 单元）计算百分比，不把比例乘上总 token 来伪造分账。历史对话只含之前轮次的用户和助手文本；工具内容按来源单列。混合命令、编排工具里的读文件结果保留在“其他工具”中。这里不代表每份记录仍在模型上下文内，也不含不可见系统提示。</p></details></section>
+  <section class="bottom-grid"><article class="card"><div class="section-title"><h2>最近一次请求</h2><span class="tag exact">日志实测</span></div><div id="last" class="metrics"></div><p id="usage-time" class="muted"></p></article><article class="card"><div class="section-title"><h2>账号额度快照</h2><span class="tag">非实时查询</span></div><div id="quota"></div><p id="quota-time" class="muted"></p></article></section>
+  <section class="card"><div class="section-title"><h2>用量记录</h2><span id="row-kind" class="tag"></span></div><p class="muted" id="history-note"></p><div id="timeline" class="timeline" role="img" aria-label="最近请求 token 消耗柱状图"></div><div class="table-wrap"><table><thead><tr><th>时间</th><th>输入</th><th>缓存输入</th><th>输出</th><th>其中推理</th><th>合计</th></tr></thead><tbody id="rows"></tbody></table></div></section>
+  <footer><details><summary>数据来源与诊断</summary><dl id="diagnostics"></dl><p>所有分析留在本机。不读取 auth.json，不联网，不修改 Codex 配置，不注入 hooks，不发送模型请求。远程窗口在远程扩展宿主读取日志。</p></details><p>个人预览版 0.6.0 · 本地日志观测，不是账单</p></footer>
+</main>
+<script nonce="{{NONCE}}" src="{{JS}}"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+'use strict';
+const {spawnSync}=require('node:child_process');
+const fs=require('node:fs'),path=require('node:path');
+const root=path.resolve(__dirname,'..');
+const p=require('../package.json');
+fs.mkdirSync(path.join(root,'dist'),{recursive:true});
+const output=path.join(root,'dist',`${p.name}-${p.version}-candidate.vsix`);
+const args=[path.join(root,'node_modules/@vscode/vsce/vsce'),'package','--no-dependencies','--out',output];
+const result=spawnSync(process.execPath,args,{cwd:root,stdio:'inherit',windowsHide:true});
+if(result.error)throw result.error;
+process.exitCode=result.status??1;

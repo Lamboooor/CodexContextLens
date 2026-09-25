@@ -1,0 +1,121 @@
+{
+  "name": "codex-lens",
+  "displayName": "Codex Lens",
+  "description": "Local Codex token usage, context insights and quota snapshots in VS Code.",
+  "version": "0.6.0",
+  "publisher": "ruoyu-li",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./src/extension.js",
+  "extensionKind": [
+    "workspace"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": false
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "codexLens.open",
+        "title": "Codex Lens: 打开用量面板"
+      },
+      {
+        "command": "codexLens.select",
+        "title": "Codex Lens: 选择并固定会话"
+      },
+      {
+        "command": "codexLens.refresh",
+        "title": "Codex Lens: 刷新用量"
+      },
+      {
+        "command": "codexLens.settings",
+        "title": "Codex Lens: 数据源设置"
+      },
+      {
+        "command": "codexLens.sidebar",
+        "title": "Codex Lens: 打开实时视图"
+      }
+    ],
+    "configuration": {
+      "title": "Codex Lens",
+      "properties": {
+        "codexLens.codexHome": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "Codex 主目录（不是 sessions 子目录）。空值使用 CODEX_HOME 或 ~/.codex。在远程窗口读取远程机器。"
+        },
+        "codexLens.refreshSeconds": {
+          "type": "number",
+          "default": 15,
+          "minimum": 5,
+          "maximum": 300,
+          "description": "日志监听之外的兜底检查间隔（秒）；日志变化时自动增量读取。"
+        },
+        "codexLens.maxSessions": {
+          "type": "number",
+          "default": 80,
+          "minimum": 5,
+          "maximum": 300,
+          "description": "列出最近修改的会话数量。只完整分析所选会话。"
+        },
+        "codexLens.autoRefreshHover": {
+          "type": "boolean",
+          "default": true,
+          "description": "自动同步悬浮卡片，仅在内容变化时更新，连续变化最多每 5 秒更新一次。原生悬浮可能重绘；关闭后需手动刷新，实时侧边栏不受影响。"
+        }
+      }
+    },
+    "views": {
+      "explorer": [
+        {
+          "type": "webview",
+          "id": "codexLens.live",
+          "name": "Codex Lens 实时用量"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "test": "node scripts/test.cjs",
+    "package:local": "node scripts/build.cjs",
+    "check:package": "python scripts/check-package.py",
+    "check:release": "node scripts/release-check.cjs"
+  },
+  "icon": "media/icon.png",
+  "keywords": [
+    "codex",
+    "tokens",
+    "context",
+    "usage",
+    "privacy"
+  ],
+  "galleryBanner": {
+    "color": "#18212d",
+    "theme": "dark"
+  },
+  "pricing": "Free",
+  "devDependencies": {
+    "@vscode/vsce": "4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lamboooor/CodexLenz.git"
+  },
+  "homepage": "https://github.com/Lamboooor/CodexLenz#readme",
+  "bugs": {
+    "url": "https://github.com/Lamboooor/CodexLenz/issues"
+  },
+  "author": "Ruoyu Li"
+}
